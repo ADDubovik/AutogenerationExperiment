@@ -10,8 +10,8 @@ void print()
 	std::cout << typeid(T).name() << '\n'
 		<< "is_copy_constructible: " << std::is_copy_constructible_v<T> << '\n'
 		<< "is_move_constructible: " << std::is_move_constructible_v<T> << '\n'
-		<< "is_copy_assignable:    "    << std::is_copy_assignable_v<T>    << '\n'
-		<< "is_move_assignable:    "    << std::is_move_assignable_v<T>    << '\n';
+		<< "is_copy_assignable:    " << std::is_copy_assignable_v<T>    << '\n'
+		<< "is_move_assignable:    " << std::is_move_assignable_v<T>    << '\n';
 }
 
 
