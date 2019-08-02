@@ -10,4 +10,9 @@ set (BRAND_COMPANYNAME "ADDubovik")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} main.cpp)
+set (SRC
+	CopyMoveSemanticsHelpers.h
+	main.cpp
+)
+
+add_executable(${PROJECT_NAME} ${SRC})
