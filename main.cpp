@@ -1,7 +1,6 @@
-#include <fstream>
-#include <string>
 #include <iostream>
 #include <type_traits>
+#include <memory>
 
 #include "CopyMoveSemanticsHelpers.h"
 
@@ -175,6 +174,23 @@ public:
 };
 
 
+class Demo1
+{
+    // will not build
+    //std::unique_ptr<char> _copyBreaker;
+public:
+    COPYABLE_MOVABLE(Demo1)
+};
+
+class Demo2
+{
+    // will not build
+    //std::unique_ptr<char> _copyBreaker;
+public:
+    COPYABLE_MOVABLE(Demo2)
+};
+
+
 int main() {
 	print<A1>();
 	print<A2>();
@@ -209,6 +225,8 @@ int main() {
     print<T2>();
     print<T3>();
     print<T4>();
+
+    print<Demo1>();
 
 	return 0;
 }
