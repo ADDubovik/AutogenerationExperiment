@@ -112,16 +112,6 @@ struct F3
 };
 
 
-template<typename T>
-struct Check
-{
-    //static_assert(std::is_copy_constructible_v<T>);
-    //static_assert(std::is_move_constructible_v<T>);
-    static_assert(std::is_copy_assignable_v<T>);
-    static_assert(std::is_move_assignable_v<T>);
-};
-
-
 class Test1
 {
 public:
