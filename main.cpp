@@ -3,6 +3,7 @@
 #include <iostream>
 #include <type_traits>
 
+#include "CopyMoveSemanticsHelpers.h"
 
 template<typename T>
 void print()
@@ -86,7 +87,7 @@ struct E1
 
 struct E2
 {
-	E2& operator=(const E2&) {}
+    E2& operator=(const E2&) {return *this;}
 };
 
 struct E3
@@ -102,12 +103,133 @@ struct F1
 
 struct F2
 {
-	F2& operator=(F2&&) {}
+    F2& operator=(F2&&) {return *this;}
 };
 
 struct F3
 {
 	F3& operator=(F3&&) = delete;
+};
+
+
+template<typename T>
+struct Check
+{
+    //static_assert(std::is_copy_constructible_v<T>);
+    //static_assert(std::is_move_constructible_v<T>);
+    static_assert(std::is_copy_assignable_v<T>);
+    static_assert(std::is_move_assignable_v<T>);
+};
+
+
+class Test
+{
+public:
+    Test(const Test&) = default;
+    Test(Test&&) = default;
+    Test& operator=(const Test&) = default;
+    Test& operator=(Test&&) = default;
+
+    Check<Test> __check;
+
+private:
+    void test1()
+    {
+        static_assert(std::is_copy_constructible_v<Test>);
+        static_assert(std::is_move_constructible_v<Test>);
+        static_assert(std::is_copy_assignable_v<Test>);
+        static_assert(std::is_move_assignable_v<Test>);
+    }
+public:
+    void test2()
+    {
+        static_assert(std::is_copy_constructible_v<Test>);
+        static_assert(std::is_move_constructible_v<Test>);
+        static_assert(std::is_copy_assignable_v<Test>);
+        static_assert(std::is_move_assignable_v<Test>);
+    }
+};
+
+
+class Test1
+{
+public:
+//private:
+    ENABLE_COPY(Test1)
+    CHECK_COPY_ENABLED(Test1)
+    //CHECK_COPY_DISABLED(Test1)
+};
+
+
+class Test2
+{
+public:
+private:
+    DISABLE_COPY(Test2)
+    CHECK_COPY_DISABLED(Test2)
+};
+
+
+class Test3
+{
+public:
+//private:
+    ENABLE_MOVE(Test3)
+    CHECK_MOVE_ENABLED(Test3)
+};
+
+
+class Test4
+{
+public:
+private:
+    DISABLE_MOVE(Test4)
+    CHECK_MOVE_DISABLED(Test4)
+};
+
+
+class T1
+{
+public:
+//private:
+    COPYABLE_MOVABLE(T1)
+};
+
+class T2
+{
+public:
+//private:
+    NONCOPYABLE_MOVABLE(T2)
+};
+
+class T3
+{
+public:
+//private:
+    COPYABLE_NONMOVABLE(T3)
+};
+
+class T4
+{
+public:
+//private:
+    NONCOPYABLE_NONMOVABLE(T4)
+};
+
+
+struct Base1
+{
+    virtual ~Base1() = default;
+};
+
+struct Base2
+{
+    virtual ~Base2() = default;
+};
+
+struct Child : public Base1, public Base2
+{
+    ~Child() override = default;
 };
 
 
@@ -135,6 +257,16 @@ int main() {
 	print<F1>();
 	print<F2>();
 	print<F3>();
+
+    print<Test1>();
+    print<Test2>();
+    print<Test3>();
+    print<Test4>();
+
+    print<T1>();
+    print<T2>();
+    print<T3>();
+    print<T4>();
 
 	return 0;
 }
