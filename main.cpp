@@ -122,35 +122,6 @@ struct Check
 };
 
 
-class Test
-{
-public:
-    Test(const Test&) = default;
-    Test(Test&&) = default;
-    Test& operator=(const Test&) = default;
-    Test& operator=(Test&&) = default;
-
-    Check<Test> __check;
-
-private:
-    void test1()
-    {
-        static_assert(std::is_copy_constructible_v<Test>);
-        static_assert(std::is_move_constructible_v<Test>);
-        static_assert(std::is_copy_assignable_v<Test>);
-        static_assert(std::is_move_assignable_v<Test>);
-    }
-public:
-    void test2()
-    {
-        static_assert(std::is_copy_constructible_v<Test>);
-        static_assert(std::is_move_constructible_v<Test>);
-        static_assert(std::is_copy_assignable_v<Test>);
-        static_assert(std::is_move_assignable_v<Test>);
-    }
-};
-
-
 class Test1
 {
 public:
@@ -160,7 +131,6 @@ public:
     //CHECK_COPY_DISABLED(Test1)
 };
 
-
 class Test2
 {
 public:
@@ -169,7 +139,6 @@ private:
     CHECK_COPY_DISABLED(Test2)
 };
 
-
 class Test3
 {
 public:
@@ -177,7 +146,6 @@ public:
     ENABLE_MOVE(Test3)
     CHECK_MOVE_ENABLED(Test3)
 };
-
 
 class Test4
 {
@@ -214,22 +182,6 @@ class T4
 public:
 //private:
     NONCOPYABLE_NONMOVABLE(T4)
-};
-
-
-struct Base1
-{
-    virtual ~Base1() = default;
-};
-
-struct Base2
-{
-    virtual ~Base2() = default;
-};
-
-struct Child : public Base1, public Base2
-{
-    ~Child() override = default;
 };
 
 
