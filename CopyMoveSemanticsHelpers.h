@@ -59,13 +59,13 @@
     ENABLE_COPY(Class) \
     CHECK_COPY_ENABLED(Class)
 
-#define MOVABLE(Class) \
-    ENABLE_MOVE(Class) \
-    CHECK_MOVE_ENABLED(Class)
-
 #define NONCOPYABLE(Class) \
     DISABLE_COPY(Class) \
     CHECK_COPY_DISABLED(Class)
+
+#define MOVABLE(Class) \
+    ENABLE_MOVE(Class) \
+    CHECK_MOVE_ENABLED(Class)
 
 #define NONMOVABLE(Class) \
     DISABLE_MOVE(Class) \
@@ -76,13 +76,13 @@
     COPYABLE(Class) \
     MOVABLE(Class)
 
-#define NONCOPYABLE_MOVABLE(Class) \
-    NONCOPYABLE(Class) \
-    MOVABLE(Class)
-
 #define COPYABLE_NONMOVABLE(Class) \
     COPYABLE(Class) \
     NONMOVABLE(Class)
+
+#define NONCOPYABLE_MOVABLE(Class) \
+    NONCOPYABLE(Class) \
+    MOVABLE(Class)
 
 #define NONCOPYABLE_NONMOVABLE(Class) \
     NONCOPYABLE(Class) \

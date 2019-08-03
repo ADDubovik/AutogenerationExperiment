@@ -1,6 +1,7 @@
 #include <iostream>
 #include <type_traits>
 #include <memory>
+#include <locale>
 
 #include "CopyMoveSemanticsHelpers.h"
 
@@ -174,20 +175,70 @@ public:
 };
 
 
-class Demo1
+using CopyBreaker = std::unique_ptr<char>;
+
+class Demo1A
 {
     // will not build
-    //std::unique_ptr<char> _copyBreaker;
+    //CopyBreaker _breaker;
 public:
-    COPYABLE_MOVABLE(Demo1)
+    COPYABLE_MOVABLE(Demo1A)
 };
 
-class Demo2
+class Demo1B
 {
     // will not build
-    //std::unique_ptr<char> _copyBreaker;
+    //CopyBreaker _breaker;
 public:
-    COPYABLE_MOVABLE(Demo2)
+    COPYABLE_NONMOVABLE(Demo1B)
+};
+
+class Demo1C
+{
+    CopyBreaker _breaker;
+public:
+    NONCOPYABLE_MOVABLE(Demo1C)
+};
+
+class Demo1D
+{
+    CopyBreaker _breaker;
+public:
+    NONCOPYABLE_NONMOVABLE(Demo1D)
+};
+
+
+using CopyMoveBreaker = std::codecvt<char, char, std::mbstate_t>;
+
+class Demo2A
+{
+    // will not build
+    //CopyMoveBreaker _breaker;
+public:
+    COPYABLE_MOVABLE(Demo2A)
+};
+
+class Demo2B
+{
+    // will not build
+    //CopyMoveBreaker _breaker;
+public:
+    COPYABLE_NONMOVABLE(Demo2B)
+};
+
+class Demo2C
+{
+    // will not build
+    //CopyMoveBreaker _breaker;
+public:
+    NONCOPYABLE_MOVABLE(Demo2C)
+};
+
+class Demo2D
+{
+    CopyMoveBreaker _breaker;
+public:
+    NONCOPYABLE_NONMOVABLE(Demo2D)
 };
 
 
@@ -226,7 +277,17 @@ int main() {
     print<T3>();
     print<T4>();
 
-    print<Demo1>();
+    print<CopyBreaker>();
+    print<Demo1A>();
+    print<Demo1B>();
+    print<Demo1C>();
+    print<Demo1D>();
+
+    print<CopyMoveBreaker>();
+    print<Demo2A>();
+    print<Demo2B>();
+    print<Demo2C>();
+    print<Demo2D>();
 
 	return 0;
 }
